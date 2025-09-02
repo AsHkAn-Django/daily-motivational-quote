@@ -12,7 +12,7 @@ class IndexView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         quote = DailyMotivationalQuote.objects.order_by('-created_at').first()
-        context['quote'] = quote.get_quote()
+        context['quote'] = quote
         return context
 
 

@@ -132,5 +132,16 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# Redis as broker
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+
+# Redis as result backend
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+# Serialization
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
+# Timezone
+CELERY_TIMEZONE = "UTC"
