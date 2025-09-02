@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>List of all the Quotes:</h2>
+    
+    {% for quote in quotes %}
+        <div class="container mt-5">
+            <figure class="text-center">
+                <blockquote class="blockquote">
+                  <a href="{% url 'quote_detail' quote.id %}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover">{{ quote.body }}</a>
+                </blockquote>
+                <figcaption class="blockquote-footer">
+                  By <cite title="Source Title">{{ quote.author }}</cite>
+                </figcaption>
+              </figure>
+        </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
+    

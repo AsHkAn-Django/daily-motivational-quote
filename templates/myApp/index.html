@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-primary mt-5"> Welcome to Quote Collection</h1>
+        <p class="fs-5 text-muted">"Collect, Share, and Get Inspired!"</p>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 text-center">
+            <h2 class="fw-semibold">Add Your Favorite Quotes </h2>
+            <p class="lead">Share words of wisdom or get inspired by reading others' quotes.</p>
+            <a href="{% url 'quote_list' %}" class="btn btn-lg btn-outline-primary mt-3">
+                 Browse Quotes
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-5 d-flex justify-content-center">
+        <blockquote class="blockquote text-center">
+            <h3 class="fw-semibold mt-4 mb-3">Today's Motivational Quote</h3>
+
+            <p class="mb-3 fst-italic">"{{quote.quote.body}}" – {{quote.quote.author}}</p>
+            <footer class="blockquote-footer">{{quote.quote.publisher}}</footer>
+        </blockquote>
+    </div>
+</div>
+{% endblock content %}
