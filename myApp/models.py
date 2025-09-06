@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 # from django.utils.timezone import now
+from django.conf import settings
 
 
 class Quote(models.Model):
@@ -46,3 +47,14 @@ class DailyMotivationalQuote(models.Model):
 
     def __str__(self):
         return f"{self.quote.body[:35]} - {self.quote.author}"
+
+
+class DailyEmailSubscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             related_name="subs"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username

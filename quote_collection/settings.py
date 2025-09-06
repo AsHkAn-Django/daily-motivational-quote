@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s)t3w3um-*cr_eb-e*mh=basd&o(ykj56clv5n%_rro6e2y-*l'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
@@ -145,3 +146,9 @@ CELERY_RESULT_SERIALIZER = "json"
 
 # Timezone
 CELERY_TIMEZONE = "UTC"
+
+# TWITTER
+TWITTER_API_KEY = config("TWIT_API_KEY")
+TWITTER_API_SECRET = config("TWIT_API_KEY_SECRET")
+TWITTER_ACCESS_TOKEN = config("TWIT_ACCESS_TOKEN")
+TWITTER_ACCESS_SECRET = config("TWIT_ACCESS_TOKEN_SECRET")
