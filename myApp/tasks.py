@@ -2,7 +2,7 @@ from celery import shared_task
 from django.core.mail import send_mail
 from .models import Quote, DailyMotivationalQuote
 import random
-import tweepy
+from django.contrib.auth import get_user_model
 
 
 
@@ -24,6 +24,18 @@ def update_motivational_quote():
     latest_quote.quote = random_quote
     latest_quote.save()
     return None
+
+
+@shared_task
+def send_email_to_subscribers():
+    message = DailyMotivationalQuote.objects.order_by("-created_at").first()
+    subject = f"Motivational Quote!"
+    for item in DailyMotivationalQuote.objects.all():
+        send_mail(subject=subject,
+                  message=message,
+                  from_email=None,
+                  recipient_list=[item.user.email]
+                  )
 
 
 # TODO: It was cancelled because it needed real domain
