@@ -1,9 +1,7 @@
 from celery import shared_task
 from django.core.mail import send_mail
-from .models import Quote, DailyMotivationalQuote
+from .models import Quote, DailyMotivationalQuote, DailyEmailSubscription
 import random
-from django.contrib.auth import get_user_model
-
 
 
 @shared_task
@@ -14,44 +12,31 @@ def update_motivational_quote():
     if quotes_count == 0:
         return None
 
-    random_index = random.randint(0, quotes_count - 1)
-    random_quote = Quote.objects.all()[random_index]
+    # Pick random quote efficiently
+    random_quote = Quote.objects.order_by("?").first()
 
     if not latest_quote:
         DailyMotivationalQuote.objects.create(quote=random_quote)
-        return None
+    else:
+        latest_quote.quote = random_quote
+        latest_quote.save()
 
-    latest_quote.quote = random_quote
-    latest_quote.save()
     return None
 
 
 @shared_task
 def send_email_to_subscribers():
-    message = DailyMotivationalQuote.objects.order_by("-created_at").first()
-    subject = f"Motivational Quote!"
-    for item in DailyMotivationalQuote.objects.all():
-        send_mail(subject=subject,
-                  message=message,
-                  from_email=None,
-                  recipient_list=[item.user.email]
-                  )
+    latest_quote = DailyMotivationalQuote.objects.order_by("-created_at").first()
+    if not latest_quote:
+        return None
 
+    subject = "Motivational Quote!"
+    message = latest_quote.quote.text  # assuming Quote has a `text` field
 
-# TODO: It was cancelled because it needed real domain
-# @shared_task
-# def post_daily_quote_to_twitter():
-#     auth = tweepy.OAuth1UserHandler(
-#     settings.TWITTER_API_KEY,
-#     settings.TWITTER_API_SECRET,
-#     settings.TWITTER_ACCESS_TOKEN,
-#     settings.TWITTER_ACCESS_SECRET,
-#     )
-#     api = tweepy.API(auth)
-
-#     api.update_status("Daily motivation 🌞")
-#     quote = DailyMotivationalQuote.objects.order_by("-created_at").first()
-#     if not quote:
-#         return "No quote found"
-
-
+    for item in DailyEmailSubscription.objects.all():
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=None,  # or settings.DEFAULT_FROM_EMAIL
+            recipient_list=[item.user.email],
+        )
