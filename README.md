@@ -30,12 +30,6 @@ The app delivers a “Quote of the Day” to users and adds extra functionality 
 - SMTP / Twilio (for email & SMS)
 - Social Media APIs (Twitter/X, Facebook, etc.)
 
-## About Me
-
-Hi, I'm Ashkan — a junior Django developer who recently transitioned from teaching English as a second language to learning backend development.
-I’m currently focused on improving my skills, building projects, and looking for opportunities to work as a backend developer.
-You can find more of my work here: [My GitHub](https://github.com/AsHkAn-Django)
-[Linkdin](in/ashkan-ahrari-146080150)
 
 ## How to Use
 
